@@ -11,5 +11,11 @@
     @if($project->type)
     <p>Type: {{$project->type->name}}</p>
     @endif
+
+    @if($project->technologies)
+            @foreach ($project->technologies as $technology)
+            <span class="badge text-bg-danger">{{$technology->name}}</span>
+            @endforeach
+    @endif
 </section>
 @endsection

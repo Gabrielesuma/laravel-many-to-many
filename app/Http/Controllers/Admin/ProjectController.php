@@ -9,6 +9,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Type;
+use App\Models\Technology;
 
 class ProjectController extends Controller
 {
@@ -29,7 +30,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -38,12 +40,12 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $form_data = $request->validated();
-        //dd($form_data);
+        
         $form_data['slug'] = Project::generateSlug($form_data['title']);
         $form_data['type_id'] = Auth::id();
-        
+        //dd($form_data);
         $newProject = Project::create($form_data);
-             
+
         return redirect()->route('admin.projects.show', $newProject->slug);
     }
 
@@ -52,8 +54,8 @@ class ProjectController extends Controller
      */
     public function show(Project $projects)
     {
-        //dd($projects);
         $project = $projects;
+        //dd($project);
         return view('admin.projects.show', compact('project'));
     }
 
@@ -63,7 +65,9 @@ class ProjectController extends Controller
     public function edit(Project $projects)
     {
         $project = $projects;
-        return view('admin.projects.edit', compact('project'));
+        $types = Type::all();
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**

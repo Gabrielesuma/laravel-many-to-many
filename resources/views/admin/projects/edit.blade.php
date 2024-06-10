@@ -73,6 +73,32 @@
                 @enderror
             </div>--}}
             <div class="mb-3">
+                <label for="type_id" class="form-label">Select Type</label>
+                <select name="type_id" id="type_id" class="form-control @error('type_id') is-invalid @enderror">
+                    <option value="">Select Type</option>
+                  @foreach ($types as $type)
+                      <option value="{{$type->id}}" {{ $type->id == old('type_id') ? 'selected' : '' }}>{{$type->name}}</option>
+                  @endforeach
+                </select>
+                @error('type_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <p>Select :</p>
+                @foreach ($technologies as $technology)
+                    <div>
+                        <input type="checkbox" name="technologies[]" value="{{ $technology->id }}" class="form-check-input"
+                            {{ in_array($technology->id, old('technologies', [])) ? 'checked' : '' }}>
+                        <label for="" class="form-check-label">{{ $technology->name }}</label>
+                    </div>
+                @endforeach
+                @error('technologies')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <button type="submit" class="btn btn-danger">Save</button>
                 <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
